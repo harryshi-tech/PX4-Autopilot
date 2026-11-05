@@ -33,7 +33,7 @@
         <scene>scene</scene>
         <ambient_light>0.35 0.35 0.38</ambient_light>
         <background_color>0.75 0.82 0.90</background_color>
-        <camera_pose>-2.5 -2.5 3.2 0 0.45 0.785</camera_pose>
+        <camera_pose>-2.2 -1.2 1.4 0 0.41 0.50</camera_pose>
         <camera_clip>
           <near>0.05</near>
           <far>500</far>
@@ -124,7 +124,7 @@
       <sky></sky>
     </scene>
 
-    <!-- Matte mid-gray floor: low specular avoids glare in videos -->
+    <!-- Matte grid floor: low specular avoids glare in videos -->
     <model name="ground_plane">
       <static>true</static>
       <link name="link">
@@ -136,17 +136,24 @@
             </plane>
           </geometry>
         </collision>
+        <!-- 1 m grid floor so motion and drift are visible on camera -->
         <visual name="visual">
           <geometry>
-            <plane>
-              <normal>0 0 1</normal>
-              <size>200 200</size>
-            </plane>
+            <mesh>
+              <uri>model://crazymusician_assets/floor.obj</uri>
+            </mesh>
           </geometry>
           <material>
-            <ambient>0.42 0.43 0.45 1</ambient>
-            <diffuse>0.42 0.43 0.45 1</diffuse>
+            <ambient>1 1 1 1</ambient>
+            <diffuse>1 1 1 1</diffuse>
             <specular>0.05 0.05 0.05 1</specular>
+            <pbr>
+              <metal>
+                <albedo_map>model://crazymusician_assets/grid.png</albedo_map>
+                <metalness>0.0</metalness>
+                <roughness>0.9</roughness>
+              </metal>
+            </pbr>
           </material>
         </visual>
       </link>
@@ -165,7 +172,7 @@
     <light name="fill" type="directional">
       <pose>0 0 500 0 0 0</pose>
       <cast_shadows>false</cast_shadows>
-      <intensity>0.5</intensity>
+      <intensity>0.25</intensity>
       <direction>0.5 -0.4 -0.6</direction>
       <diffuse>0.55 0.6 0.7 1</diffuse>
       <specular>0 0 0 1</specular>
