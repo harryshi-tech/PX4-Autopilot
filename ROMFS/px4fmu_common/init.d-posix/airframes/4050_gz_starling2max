@@ -1,0 +1,90 @@
+#!/bin/sh
+#
+# @name Gazebo ModalAI Starling 2 Max (CrazyMusician)
+#
+# @type Quadrotor
+#
+# Geometry, motor limits and yaw moment ratio match
+# Tools/simulation/gz/models/starling2max/model.sdf.
+# Attitude and rate gains are ModalAI's Starling 2 Max values
+# (D0012_Starling_2_Max.params).
+
+. ${R}etc/init.d/rc.mc_defaults
+
+PX4_SIMULATOR=${PX4_SIMULATOR:=gz}
+PX4_GZ_WORLD=${PX4_GZ_WORLD:=default}
+PX4_SIM_MODEL=${PX4_SIM_MODEL:=starling2max}
+
+param set-default SIM_GZ_EN 1
+
+param set-default SENS_EN_GPSSIM 1
+param set-default SENS_EN_BAROSIM 0
+param set-default SENS_EN_MAGSIM 1
+
+# Control allocation. Rotor positions (FRD frame, m) from model.sdf, which
+# match the datasheet's 260 mm x 190 mm motor-to-motor spacing.
+# KM is the SDF momentConstant (yaw moment / thrust); positive = CCW.
+param set-default CA_AIRFRAME 0
+param set-default CA_ROTOR_COUNT 4
+
+param set-default CA_ROTOR0_PX  0.095
+param set-default CA_ROTOR0_PY  0.13
+param set-default CA_ROTOR0_KM  0.0136
+
+param set-default CA_ROTOR1_PX -0.095
+param set-default CA_ROTOR1_PY -0.13
+param set-default CA_ROTOR1_KM  0.0136
+
+param set-default CA_ROTOR2_PX  0.095
+param set-default CA_ROTOR2_PY -0.13
+param set-default CA_ROTOR2_KM -0.0136
+
+param set-default CA_ROTOR3_PX -0.095
+param set-default CA_ROTOR3_PY  0.13
+param set-default CA_ROTOR3_KM -0.0136
+
+# Gazebo ESC outputs: SDF motorNumber 0-3 drive rotors 0-3.
+# Output maps linearly to rotor speed in rad/s; max = SDF maxRotVelocity.
+param set-default SIM_GZ_EC_FUNC1 101
+param set-default SIM_GZ_EC_FUNC2 102
+param set-default SIM_GZ_EC_FUNC3 103
+param set-default SIM_GZ_EC_FUNC4 104
+
+param set-default SIM_GZ_EC_MIN1 150
+param set-default SIM_GZ_EC_MIN2 150
+param set-default SIM_GZ_EC_MIN3 150
+param set-default SIM_GZ_EC_MIN4 150
+
+param set-default SIM_GZ_EC_MAX1 1257
+param set-default SIM_GZ_EC_MAX2 1257
+param set-default SIM_GZ_EC_MAX3 1257
+param set-default SIM_GZ_EC_MAX4 1257
+
+# Thrust model. Thrust ~ speed^2 and speed is linear in output u, so
+# T/Tmax = (0.119 + 0.881 u)^2 ~ 0.78 u^2 + 0.21 u  ->  THR_MDL_FAC = 0.8.
+param set-default THR_MDL_FAC 0.8
+
+# Hover thrust = weight / max thrust = 4.86 N / 25.1 N = 0.19
+# (the hover thrust estimator refines this in flight).
+param set-default MPC_THR_HOVER 0.20
+param set-default MPC_THR_MAX 0.60
+param set-default MPC_THR_MIN 0.04
+
+# Attitude and rate gains: ModalAI Starling 2 Max values.
+param set-default MC_ROLL_P 8.0
+param set-default MC_PITCH_P 8.0
+param set-default MC_YAW_P 2.8
+
+param set-default MC_ROLLRATE_P 0.064
+param set-default MC_ROLLRATE_I 0.100
+param set-default MC_ROLLRATE_D 0.0013
+param set-default MC_PITCHRATE_P 0.064
+param set-default MC_PITCHRATE_I 0.096
+param set-default MC_PITCHRATE_D 0.0011
+param set-default MC_YAWRATE_P 0.07
+param set-default MC_YAWRATE_I 0.5
+param set-default MC_YAWRATE_D 0.0
+
+param set-default MC_ROLLRATE_MAX 130.0
+param set-default MC_PITCHRATE_MAX 130.0
+param set-default MC_YAWRATE_MAX 150.0
