@@ -36,6 +36,11 @@
             <uri>model://starling2max/meshes/body.stl</uri>
           </mesh>
         </geometry>
+          <material>
+            <ambient>0.10 0.10 0.11 1</ambient>
+            <diffuse>0.16 0.16 0.18 1</diffuse>
+            <specular>0.35 0.35 0.35 1</specular>
+          </material>
       </visual>
       <sensor name="air_pressure_sensor" type="air_pressure">
         <always_on>1</always_on>
@@ -104,6 +109,11 @@
             <uri>model://starling2max/meshes/rotor0.stl</uri>
           </mesh>
         </geometry>
+          <material>
+            <ambient>0.95 0.40 0.05 1</ambient>
+            <diffuse>0.95 0.40 0.05 1</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+          </material>
       </visual>
     </link>
     <joint name='joint1' type='revolute'>
@@ -156,6 +166,11 @@
             <uri>model://starling2max/meshes/rotor1.stl</uri>
           </mesh>
         </geometry>
+          <material>
+            <ambient>0.05 0.05 0.05 1</ambient>
+            <diffuse>0.05 0.05 0.05 1</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+          </material>
       </visual>
     </link>
     <joint name='joint2' type='revolute'>
@@ -208,6 +223,11 @@
             <uri>model://starling2max/meshes/rotor2.stl</uri>
           </mesh>
         </geometry>
+          <material>
+            <ambient>0.95 0.40 0.05 1</ambient>
+            <diffuse>0.95 0.40 0.05 1</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+          </material>
       </visual>
     </link>
     <joint name='joint3' type='revolute'>
@@ -260,6 +280,11 @@
             <uri>model://starling2max/meshes/rotor3.stl</uri>
           </mesh>
         </geometry>
+          <material>
+            <ambient>0.05 0.05 0.05 1</ambient>
+            <diffuse>0.05 0.05 0.05 1</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+          </material>
       </visual>
     </link>
     <plugin filename="gz-sim-multicopter-motor-model-system" name="gz::sim::systems::MulticopterMotorModel">
