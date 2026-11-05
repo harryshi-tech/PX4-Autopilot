@@ -28,19 +28,132 @@
           </mesh>
         </geometry>
       </collision>
-      <visual name='base_link_visual'>
+      <!-- Body split into parts so each gets the color of the real vehicle -->
+      <visual name='base_link_visual_frame'>
         <pose>0 0 0 0 0 0</pose>
         <geometry>
           <mesh>
             <scale>1 1 1</scale>
-            <uri>model://starling2max/meshes/body.stl</uri>
+            <uri>model://starling2max/meshes/body_frame.stl</uri>
           </mesh>
         </geometry>
-          <material>
-            <ambient>0.03 0.03 0.035 1</ambient>
-            <diffuse>0.06 0.06 0.065 1</diffuse>
-            <specular>0.40 0.40 0.40 1</specular>
-          </material>
+        <material>
+          <ambient>0.04 0.04 0.04 1</ambient>
+          <diffuse>0.07 0.07 0.07 1</diffuse>
+          <specular>0.3 0.3 0.3 1</specular>
+        </material>
+      </visual>
+      <visual name='base_link_visual_legs'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://starling2max/meshes/body_legs.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <ambient>0.03 0.03 0.03 1</ambient>
+          <diffuse>0.05 0.05 0.05 1</diffuse>
+          <specular>0.45 0.45 0.45 1</specular>
+        </material>
+      </visual>
+      <visual name='base_link_visual_motor'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://starling2max/meshes/body_motor.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <ambient>0.06 0.06 0.06 1</ambient>
+          <diffuse>0.10 0.10 0.10 1</diffuse>
+          <specular>0.4 0.4 0.4 1</specular>
+        </material>
+      </visual>
+      <visual name='base_link_visual_gold'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://starling2max/meshes/body_gold.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <ambient>0.48 0.37 0.13 1</ambient>
+          <diffuse>0.80 0.62 0.22 1</diffuse>
+          <specular>0.7 0.7 0.7 1</specular>
+        </material>
+      </visual>
+      <visual name='base_link_visual_battery'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://starling2max/meshes/body_battery.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <ambient>0.33 0.51 0.15 1</ambient>
+          <diffuse>0.55 0.85 0.25 1</diffuse>
+          <specular>0.25 0.25 0.25 1</specular>
+        </material>
+      </visual>
+      <visual name='base_link_visual_cap'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://starling2max/meshes/body_cap.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <ambient>0.54 0.54 0.53 1</ambient>
+          <diffuse>0.90 0.90 0.88 1</diffuse>
+          <specular>0.2 0.2 0.2 1</specular>
+        </material>
+      </visual>
+      <visual name='base_link_visual_hoop'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://starling2max/meshes/body_hoop.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <ambient>0.04 0.04 0.04 1</ambient>
+          <diffuse>0.06 0.06 0.06 1</diffuse>
+          <specular>0.35 0.35 0.35 1</specular>
+        </material>
+      </visual>
+      <visual name='base_link_visual_pcb'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://starling2max/meshes/body_pcb.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <ambient>0.13 0.23 0.25 1</ambient>
+          <diffuse>0.22 0.38 0.42 1</diffuse>
+          <specular>0.3 0.3 0.3 1</specular>
+        </material>
+      </visual>
+      <visual name='base_link_visual_camera'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://starling2max/meshes/body_camera.stl</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <ambient>0.02 0.02 0.02 1</ambient>
+          <diffuse>0.04 0.04 0.04 1</diffuse>
+          <specular>0.4 0.4 0.4 1</specular>
+        </material>
       </visual>
       <sensor name="air_pressure_sensor" type="air_pressure">
         <always_on>1</always_on>
@@ -110,9 +223,9 @@
           </mesh>
         </geometry>
           <material>
-            <ambient>0.04 0.04 0.04 1</ambient>
-            <diffuse>0.04 0.04 0.04 1</diffuse>
-            <specular>0.2 0.2 0.2 1</specular>
+            <ambient>0.05 0.05 0.055 1</ambient>
+            <diffuse>0.09 0.09 0.095 1</diffuse>
+            <specular>0.35 0.35 0.35 1</specular>
           </material>
       </visual>
     </link>
@@ -167,9 +280,9 @@
           </mesh>
         </geometry>
           <material>
-            <ambient>0.04 0.04 0.04 1</ambient>
-            <diffuse>0.04 0.04 0.04 1</diffuse>
-            <specular>0.2 0.2 0.2 1</specular>
+            <ambient>0.05 0.05 0.055 1</ambient>
+            <diffuse>0.09 0.09 0.095 1</diffuse>
+            <specular>0.35 0.35 0.35 1</specular>
           </material>
       </visual>
     </link>
@@ -224,9 +337,9 @@
           </mesh>
         </geometry>
           <material>
-            <ambient>0.04 0.04 0.04 1</ambient>
-            <diffuse>0.04 0.04 0.04 1</diffuse>
-            <specular>0.2 0.2 0.2 1</specular>
+            <ambient>0.05 0.05 0.055 1</ambient>
+            <diffuse>0.09 0.09 0.095 1</diffuse>
+            <specular>0.35 0.35 0.35 1</specular>
           </material>
       </visual>
     </link>
@@ -281,9 +394,9 @@
           </mesh>
         </geometry>
           <material>
-            <ambient>0.04 0.04 0.04 1</ambient>
-            <diffuse>0.04 0.04 0.04 1</diffuse>
-            <specular>0.2 0.2 0.2 1</specular>
+            <ambient>0.05 0.05 0.055 1</ambient>
+            <diffuse>0.09 0.09 0.095 1</diffuse>
+            <specular>0.35 0.35 0.35 1</specular>
           </material>
       </visual>
     </link>
