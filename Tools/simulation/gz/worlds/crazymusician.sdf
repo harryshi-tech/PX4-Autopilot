@@ -77,6 +77,16 @@
           <property key="showTitleBar" type="bool">false</property>
         </gz-gui>
       </plugin>
+      <!-- Draws GUI markers (wind arrows from tools/wind.py) -->
+      <plugin filename="MarkerManager" name="Marker manager">
+        <gz-gui>
+          <property key="resizable" type="bool">false</property>
+          <property key="width" type="double">5</property>
+          <property key="height" type="double">5</property>
+          <property key="state" type="string">floating</property>
+          <property key="showTitleBar" type="bool">false</property>
+        </gz-gui>
+      </plugin>
       <!-- Right-click a model > Follow, or scripts/sim.sh follow -->
       <plugin filename="CameraTracking" name="Camera Tracking">
         <gz-gui>
