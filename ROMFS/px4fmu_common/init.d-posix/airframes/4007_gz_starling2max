@@ -13,7 +13,12 @@ PX4_SIM_MODEL=${PX4_SIM_MODEL:=starling2max}
 
 param set-default SIM_GZ_EN 1
 
-param set-default SENS_EN_GPSSIM 1
+# No simulated GPS at all (indoor / mocap setup). EKF2 runs its GPS checks even
+# with EKF2_GPS_CTRL 0 and initializes its global origin from the first good fix
+# (EKF/gps_checks.cpp, collect_gps); a later set_ekf_origin then reprojects the
+# local position from that origin (setEkfGlobalOrigin), shifting the local frame
+# away from the vision (Gazebo world) frame.
+param set-default SENS_EN_GPSSIM 0
 param set-default SENS_EN_BAROSIM 0
 param set-default SENS_EN_MAGSIM 1
 
@@ -57,8 +62,35 @@ param set-default MC_ROLLRATE_MAX 20.0
 param set-default MC_PITCHRATE_MAX 20.0
 param set-default MC_YAWRATE_MAX 150.0
 param set-default COM_FAIL_ACT_T 0.000
-param set-default EKF2_EV_QMIN 16
+# Sim only: gz_bridge never sets vehicle_odometry.quality (always 0), so any
+# EKF2_EV_QMIN > 0 rejects every vision sample.
+param set-default EKF2_EV_QMIN 0
 param set-default EKF2_HGT_REF 3
+# Vision only, as on hardware indoors (OptiTrack): the model's OdometryPublisher
+# stands in for mocap. Simulated GPS would otherwise be fused too and let the
+# estimate wander 10-20 cm (EKF2_EV_CTRL keeps its default 15, HGT_REF 3 = vision).
+param set-default EKF2_GPS_CTRL 0
+# Sim only: heading from vision only (EKF2_EV_CTRL bit 3), as with mocap indoors.
+# With the magnetometer fused, its heading disagrees with the vision yaw and
+# estimator_status.mag_test_ratio intermittently exceeds COM_ARM_EKF_YAW (0.5):
+# "Preflight Fail: Yaw estimate error". The simulated magnetometer stays enabled
+# (SENS_EN_MAGSIM 1), so the SYS_HAS_MAG 1 sensor check still passes; the field
+# strength check (COM_ARM_MAG_STR 2) is warning-only. Hardware (D0012 params)
+# keeps the default EKF2_MAG_TYPE 0.
+param set-default EKF2_MAG_TYPE 5
+# Sim only: offboard loss -> Hold. The node stops streaming on a safety trip and
+# PX4 declares offboard lost after COM_OF_LOSS_T (1 s). The default
+# COM_OBL_RC_ACT 0 (Position mode) needs RC; without RC the failsafe framework
+# falls back Position -> Altitude -> Stabilized, none of which can run, and ends
+# in Return mode (failsafe.cpp checkModeFallback), which climbs to RTL altitude.
+# Hold (AUTO_LOITER) needs only local + global position, both available here
+# (vision + the EKF origin set by scripts/px4_restart.sh). Hardware keeps the
+# default 0: the pilot has RC there.
+param set-default COM_OBL_RC_ACT 5
+# Sim only (on hardware the pilot takes off in Position mode): the keyboard is
+# 0.5 m above the floor, so a 1 m takeoff from the 0.368 m pad keeps the song
+# entry short and the hover far inside the fence.
+param set-default MIS_TAKEOFF_ALT 1.0
 param set-default MPC_TKO_RAMP_T 2.00
 param set-default COM_SPOOLUP_TIME 2.0
 param set-default MPC_TKO_SPEED 1.50

@@ -402,6 +402,63 @@
           </material>
       </visual>
     </link>
+    <!-- Stylus: vertical rod + spherical tip under the body center (x = y = 0).
+         Lowest tip point = tip center -0.294 - radius 0.006 = -0.300 m below the body
+         origin; this MUST match stick_length_m (0.30) in
+         ros2_ws/src/crazymusician_control/config/ode_to_joy.yaml.
+         Rod top at z = -0.019: body underside at the center (lowest body.stl point
+         within |x|,|y| < 0.01 is z = -0.0168). Mass 0.020 kg is a placeholder for
+         the real stylus + mount; inertia of a thin rod about its center (izz of a
+         solid cylinder, so it is not zero). -->
+    <link name='stylus'>
+      <pose relative_to='base_link'>0 0 0 0 0 0</pose>
+      <self_collide>false</self_collide>
+      <inertial>
+        <pose>0 0 -0.1565 0 0 0</pose>
+        <mass>0.02</mass>
+        <inertia>
+          <ixx>1.2604e-04</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1.2604e-04</iyy>
+          <iyz>0</iyz>
+          <izz>2.5000e-07</izz>
+        </inertia>
+      </inertial>
+      <collision name='stylus_rod_collision'>
+        <pose>0 0 -0.1565 0 0 0</pose>
+        <geometry><cylinder><radius>0.005</radius><length>0.275</length></cylinder></geometry>
+        <!-- mu 0.3 (stylus and keys both, tools/keyboard.py); DART uses the
+             smaller of the two surfaces' coefficients -->
+        <surface><friction><ode><mu>0.3</mu><mu2>0.3</mu2></ode></friction></surface>
+      </collision>
+      <collision name='stylus_tip_collision'>
+        <pose>0 0 -0.294 0 0 0</pose>
+        <geometry><sphere><radius>0.006</radius></sphere></geometry>
+        <surface><friction><ode><mu>0.3</mu><mu2>0.3</mu2></ode></friction></surface>
+      </collision>
+      <visual name='stylus_rod_visual'>
+        <pose>0 0 -0.1565 0 0 0</pose>
+        <geometry><cylinder><radius>0.005</radius><length>0.275</length></cylinder></geometry>
+        <material>
+          <ambient>0.2 0.2 0.2 1</ambient>
+          <diffuse>0.2 0.2 0.2 1</diffuse>
+        </material>
+      </visual>
+      <visual name='stylus_tip_visual'>
+        <pose>0 0 -0.294 0 0 0</pose>
+        <geometry><sphere><radius>0.006</radius></sphere></geometry>
+        <material>
+          <ambient>1.0 0.4 0.0 1</ambient>
+          <diffuse>1.0 0.4 0.0 1</diffuse>
+          <emissive>0.6 0.2 0.0 1</emissive>
+        </material>
+      </visual>
+    </link>
+    <joint name='stylus_joint' type='fixed'>
+      <parent>base_link</parent>
+      <child>stylus</child>
+    </joint>
     <plugin filename="gz-sim-multicopter-motor-model-system" name="gz::sim::systems::MulticopterMotorModel">
       <jointName>joint0</jointName>
       <linkName>vehicle_rotor0</linkName>
@@ -465,6 +522,13 @@
       <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
       <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
       <motorType>velocity</motorType>
+    </plugin>
+    <!-- Ground-truth odometry standing in for mocap (OptiTrack): published on
+         /model/<model name>/odometry_with_covariance, which gz_bridge forwards
+         to PX4 as vehicle_visual_odometry (as in x500_vision) -->
+    <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
+      <dimensions>3</dimensions>
+      <odom_publish_frequency>100</odom_publish_frequency>
     </plugin>
   </model>
 </sdf>
