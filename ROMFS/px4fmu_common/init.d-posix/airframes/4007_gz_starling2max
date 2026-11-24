@@ -87,6 +87,11 @@ param set-default EKF2_MAG_TYPE 5
 # (vision + the EKF origin set by scripts/px4_restart.sh). Hardware keeps the
 # default 0: the pilot has RC there.
 param set-default COM_OBL_RC_ACT 5
+# Sim only: after a node safety trip (it stops streaming setpoints) PX4 should
+# take over within 0.2 s instead of flying the stale setpoint for the default 1 s
+# (a contact tip-over grew from 25 deg to a crash in that second). The node
+# streams at 100 Hz, so 0.2 s is 20 missed setpoints.
+param set-default COM_OF_LOSS_T 0.2
 # Sim only (on hardware the pilot takes off in Position mode): the keyboard is
 # 0.5 m above the floor, so a 1 m takeoff from the 0.368 m pad keeps the song
 # entry short and the hover far inside the fence.
